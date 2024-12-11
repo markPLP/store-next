@@ -12,11 +12,7 @@ export const fetchFeaturedProducts = async () => {
   return products;
 };
 
-export const fetchAllProducts = ({
-  search = '',
-}: {
-  search: string;
-}): Promise<Product[]> => {
+export const fetchAllProducts = ({ search = '' }: { search: string }) => {
   return db.product.findMany({
     where: {
       OR: [
@@ -25,7 +21,7 @@ export const fetchAllProducts = ({
       ],
     },
     orderBy: {
-      createdAt: 'desc', // get the recent product 1st
+      createdAt: 'desc',
     },
   });
 };
