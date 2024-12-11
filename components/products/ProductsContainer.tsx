@@ -3,19 +3,23 @@ import ProductsList from './ProductsList';
 import { LuLayoutGrid, LuList } from 'react-icons/lu';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { fetchAllProducts } from '@/utils/actions';
 import Link from 'next/link';
+import { Product } from '@prisma/client';
 
-async function ProductsContainer({
-  layout,
-  search,
-}: {
+type ProductsContainerProps = {
   layout: string;
   search: string;
-}) {
-  const products = await fetchAllProducts({ search });
+  products: Product[]; // Assume 'Product' is already defined or imported from elsewhere
+};
+
+function ProductsContainer({
+  layout,
+  search,
+  products,
+}: ProductsContainerProps) {
   const totalProducts = products.length;
   const searchTerm = search ? `&search=${search}` : '';
+
   return (
     <>
       {/* HEADER */}
@@ -47,6 +51,7 @@ async function ProductsContainer({
         </div>
         <Separator className="mt-4" />
       </section>
+
       {/* PRODUCTS */}
       <div>
         {totalProducts === 0 ? (
@@ -62,4 +67,5 @@ async function ProductsContainer({
     </>
   );
 }
+
 export default ProductsContainer;

@@ -1,19 +1,21 @@
 import ProductsContainer from '@/components/products/ProductsContainer';
-import { Suspense } from 'react';
+import { fetchAllProducts } from '@/utils/actions';
 
 async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { layout?: string; search?: string }; // optional - undefined on 1st load - no searchParams
+  searchParams: { layout?: string; search?: string };
 }) {
+  // Fetch products server-side based on search parameters
   const layout = searchParams.layout || 'grid';
   const search = searchParams.search || '';
+  const products = await fetchAllProducts({ search });
+
   return (
     <>
-      <Suspense fallback={<div>Loading products...</div>}>
-        <ProductsContainer layout={layout} search={search} />
-      </Suspense>
+      <ProductsContainer layout={layout} search={search} products={products} />
     </>
   );
 }
+
 export default ProductsPage;

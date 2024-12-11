@@ -1,12 +1,16 @@
-// app/page.tsx
 import Hero from '@/components/home/Hero';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
+import { fetchFeaturedProducts } from '@/utils/actions';
 
-export default function HomePage() {
+async function HomePage() {
+  const featuredProducts = await fetchFeaturedProducts();
+
   return (
     <>
       <Hero />
-      <FeaturedProducts /> {/* No need to wrap in Suspense here */}
+      <FeaturedProducts products={featuredProducts} />
     </>
   );
 }
+
+export default HomePage;
