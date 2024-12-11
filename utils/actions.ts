@@ -2,7 +2,7 @@ import db from '@/utils/db';
 import { Product } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
-export const fetchFeaturedProducts = async () => {
+export const fetchFeaturedProducts = async (): Promise<Product[]> => {
   const products = await db.product.findMany({
     where: {
       featured: true,

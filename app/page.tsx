@@ -1,13 +1,12 @@
+// app/page.tsx
 import Hero from '@/components/home/Hero';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 
-function HomePage() {
+export default function HomePage() {
   return (
     <>
       <Hero />
-      <FeaturedProducts />
+      <FeaturedProducts /> {/* No need to wrap in Suspense here */}
     </>
   );
 }
-
-export default HomePage;
