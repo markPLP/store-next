@@ -9,12 +9,14 @@ export const metadata = {
 };
 
 async function HomePage() {
-  let featuredProducts: Product[] = [];
-  try {
-    featuredProducts = await fetchFeaturedProducts();
-  } catch (error) {
-    console.error('Error fetching featured products:', error);
-  }
+  // let featuredProducts: Product[] = [];
+  // try {
+  //   featuredProducts = await fetchFeaturedProducts();
+  //   return featuredProducts;
+  // } catch (error) {
+  //   console.error('Error fetching featured products:', error);
+  // }
+  const featuredProducts = await fetchFeaturedProducts();
 
   return (
     <>
