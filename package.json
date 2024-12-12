@@ -18,7 +18,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-toast": "^1.1.5",
+    "@radix-ui/react-toast": "^1.2.2",
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.5.0",
     "@supabase/supabase-js": "^2.43.4",
