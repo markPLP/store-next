@@ -1,40 +1,50 @@
-'use client'; // Add this if you're using Next.js server components
-
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { faker } from '@faker-js/faker';
+import { SubmitButton } from '@/components/form/Button';
+import CheckboxInput from '@/components/form/CheckBoxInput';
+import FormContainer from '@/components/form/FormContainer';
 import FormInput from '@/components/form/FormInput';
-
-const createProductAction = async (formData: FormData) => {
-  const name = formData.get('name') as string;
-  console.log(name);
-};
+import ImageInput from '@/components/form/ImageInput';
+import PriceInput from '@/components/form/PriceInput';
+import TextAreaInput from '@/components/form/TextAreaInput';
+import { Button } from '@/components/ui/button';
+import { createProductAction } from '@/utils/actions';
+import { faker } from '@faker-js/faker';
 
 function CreateProductPage() {
   const name = faker.commerce.productName();
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    const formData = new FormData(event.currentTarget);
-    await createProductAction(formData);
-  };
-
+  const company = faker.company.name();
+  const description = faker.lorem.paragraph({ min: 10, max: 12 });
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-8 capitalize">Create Product</h1>
+      <h1 className="text-2xl font-semibold mb-8 capitalize">create product</h1>
       <div className="border p-8 rounded-md">
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            type="text"
-            name="name"
-            label="product name"
-            defaultValue={name}
+        <FormContainer action={createProductAction}>
+          {/* children prop from formContainer */}
+          <div className="grid gap-4 md:grid-cols-2 my-4">
+            <FormInput
+              type="text"
+              name="name"
+              label="product name"
+              defaultValue={name}
+            />
+            <FormInput
+              type="text"
+              name="company"
+              label="company"
+              defaultValue={company}
+            />
+            <PriceInput />
+            <ImageInput />
+          </div>
+          <TextAreaInput
+            name="description"
+            labelText="product description"
+            defaultValue={description}
           />
-          <Button type="submit" size="lg">
-            Submit
-          </Button>
-        </form>
+          <div className="mt-6">
+            <CheckboxInput name="featured" label="featured" />
+          </div>
+          <SubmitButton text="create product" className="mt-8" />
+        </FormContainer>
       </div>
     </section>
   );
