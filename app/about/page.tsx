@@ -1,5 +1,9 @@
-function Aboutpage() {
-  return <div>Aboutpage</div>;
+function AboutPage() {
+  return (
+    <div>
+      <h1>About Page</h1>
+    </div>
+  );
 }
 
-export default Aboutpage;
+export default AboutPage;
