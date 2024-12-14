@@ -1,12 +1,10 @@
 'use client';
 
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { useFormStatus } from 'react-dom';
+import { useFormState } from '@/hooks/useFormState'; // Use the custom hook
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { SignInButton } from '@clerk/nextjs';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
-//import { LuTrash2, LuPenSquare } from 'react-icons/lu';
+import { actionFunction } from '@/utils/types'; // Ensure actionFunction type is imported
 
 type btnSize = 'default' | 'lg' | 'sm';
 
@@ -14,23 +12,28 @@ type SubmitButtonProps = {
   className?: string;
   text?: string;
   size?: btnSize;
+  action?: actionFunction; // Make action optional
+  initialState?: { message: string }; // Make initialState optional
 };
 
 export function SubmitButton({
   className = '',
   text = 'submit',
   size = 'lg',
+  action = () => Promise.resolve({ message: '' }), // Default no-op action
+  initialState = { message: '' }, // Default initial state
 }: SubmitButtonProps) {
-  const { pending } = useFormStatus();
+  // Pass action and initialState to useFormState
+  const [state, isSubmitting] = useFormState(action, initialState);
 
   return (
     <Button
       type="submit"
-      disabled={pending}
+      disabled={isSubmitting}
       className={cn('capitalize', className)}
       size={size}
     >
-      {pending ? (
+      {isSubmitting ? (
         <>
           <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
           Please wait...
