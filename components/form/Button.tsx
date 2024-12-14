@@ -25,6 +25,7 @@ export function SubmitButton({
 }: SubmitButtonProps) {
   // Pass action and initialState to useFormState
   const [state, isSubmitting] = useFormState(action, initialState);
+  console.log('isSubmitting', isSubmitting);
 
   return (
     <Button

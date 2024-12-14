@@ -5,14 +5,14 @@ import { Product } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { productSchema, validateWithZodSchema } from './schema';
-
+// helper function
 const renderError = (error: unknown): { message: string } => {
   console.log(error);
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
   };
 };
-
+// helper function
 const getAuthUser = async () => {
   const user = await currentUser();
   if (!user) {
