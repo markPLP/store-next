@@ -6,7 +6,7 @@ const isAdminRoute = createRouteMatcher(['admin/(.*)']);
 
 export default clerkMiddleware((auth, req) => {
   //console.log(auth().userId);
-
+  console.log(auth().userId); // Log the userId
   //check admin ID in .env
   const isAdminUser = auth().userId === process.env.ADMIN_USER_ID;
 
