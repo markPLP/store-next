@@ -8,7 +8,6 @@ import { imageSchema, productSchema, validateWithZodSchema } from './schema';
 import { uploadImage } from './supabase';
 // helper function
 const renderError = (error: unknown): { message: string } => {
-  console.log(error);
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
   };
