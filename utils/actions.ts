@@ -5,7 +5,9 @@ import { Product } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { imageSchema, productSchema, validateWithZodSchema } from './schema';
-import { uploadImage } from './supabase';
+import { deleteImage, uploadImage } from './supabase';
+import { revalidatePath } from 'next/cache';
+
 // helper function
 const renderError = (error: unknown): { message: string } => {
   return {
@@ -88,7 +90,7 @@ export const createProductAction = async (
         clerkId: user.id,
       },
     });
-    // return { message: 'product created' }; no return here if we opt to redirect
+    //return { message: 'product created' }; // no return here if we opt to redirect redirect('/admin/products')
   } catch (error) {
     return renderError(error);
   }
@@ -103,4 +105,27 @@ export const fetchAdminProducts = async () => {
     },
   });
   return products;
+};
+
+export const deleteProductAction = async (prevState: { productId: string }) => {
+  const { productId } = prevState;
+  console.log(productId);
+
+  await getAdminUser();
+
+  try {
+    // await db.product.delete({ // refactor to delete from supabase
+    const product = await db.product.delete({
+      where: {
+        id: productId,
+      },
+    });
+    await deleteImage(product.image);
+
+    revalidatePath('/admin/products'); // update UI -  Incremental Static Regeneration (ISR)
+    // NOTE: This allows you to refresh the static data for a specific page or route without rebuilding the entire app.
+    return { message: 'product removed' };
+  } catch (error) {
+    return renderError(error);
+  }
 };
