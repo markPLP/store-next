@@ -25,7 +25,7 @@ export const productSchema = z.object({
   ),
 });
 
-// schema helper function
+// schema helper function - safeParse
 export function validateWithZodSchema<T>(
   schema: ZodSchema<T>,
   data: unknown
@@ -36,4 +36,24 @@ export function validateWithZodSchema<T>(
     throw new Error(errors.join(', '));
   }
   return result.data;
+}
+// image Schema
+export const imageSchema = z.object({
+  image: validateImageFile(),
+});
+
+function validateImageFile() {
+  const maxUploadSize = 1024 * 1024;
+  const acceptedFileTypes = ['image/'];
+  return z
+    .instanceof(File) //instance - check value if w're getting the instance of File
+    .refine((file) => {
+      // refine - pass the function and the pass the error message
+      return !file || file.size <= maxUploadSize;
+    }, `File size must be less than 1 MB`)
+    .refine((file) => {
+      return (
+        !file || acceptedFileTypes.some((type) => file.type.startsWith(type))
+      );
+    }, 'File must be an image');
 }
