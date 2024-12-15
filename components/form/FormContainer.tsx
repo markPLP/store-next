@@ -1,38 +1,32 @@
 'use client';
 
+import { useFormState } from 'react-dom';
 import { useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { actionFunction } from '@/utils/types';
-import { useFormState } from '@/hooks/useFormState'; // Use the custom hook
 
 const initialState = {
   message: '',
 };
 
-function FormContainer({
-  action,
-  children,
-}: {
+type FormContainerProps = {
   action: actionFunction;
   children: React.ReactNode;
-}) {
-  const [state, isSubmitting, formAction] = useFormState(action, initialState); // Include `isSubmitting`
+};
+
+function FormContainer({ action, children }: FormContainerProps) {
+  const [state, formAction] = useFormState(action, initialState);
   const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    await formAction(formData); // Trigger the custom hook's formAction
-  };
-
   useEffect(() => {
     if (state.message) {
-      console.log('State message:', state.message);
       toast({ description: state.message });
     }
-  }, [state.message, toast]);
+  }, [state, toast]);
 
-  return <form onSubmit={handleSubmit}>{children}</form>;
+  return <form action={formAction as unknown as string}>{children}</form>;
+  // ISSUE: .action?: string | undefined
+  // NOTE: action` attribute expects a string URL, but we're passing a function for React Server Actions. We can use a TypeScript assertion to tell the compiler that our usage is intentional and correct.
+  // SOLUTION: tell TS compiler that our usage is intentional and correct.
+  // use assertion 'as unknown as string'
 }
-
 export default FormContainer;
