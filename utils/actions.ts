@@ -15,7 +15,7 @@ const renderError = (error: unknown): { message: string } => {
   };
 };
 // helper function
-const getAuthUser = async () => {
+export const getAuthUser = async () => {
   const user = await currentUser();
   // console.log(user);
 
@@ -199,6 +199,7 @@ export const updateProductImageAction = async (
 
 export const fetchFavoriteId = async ({ productId }: { productId: string }) => {
   const user = await getAuthUser();
+  //  const pathname = usePathname();
   const favorite = await db.favorite.findFirst({
     where: {
       productId,
@@ -212,32 +213,38 @@ export const fetchFavoriteId = async ({ productId }: { productId: string }) => {
   return favorite?.id || null; // null on first load
 };
 
-export const toggleFavoriteAction = async (prevState: {
+export const toggleFavoriteAction = async ({
+  productId,
+  favoriteId,
+  pathname,
+}: {
   productId: string;
   favoriteId: string | null;
   pathname: string;
 }) => {
   const user = await getAuthUser();
-  const { productId, favoriteId, pathname } = prevState;
   try {
     if (favoriteId) {
+      // If already favorited, remove from the database
       await db.favorite.delete({
         where: {
           id: favoriteId,
         },
       });
+      return { favoriteId: null, message: 'Removed from Faves' }; // Return null if removed
     } else {
-      await db.favorite.create({
+      // If not favorited, add to the database
+      const newFavorite = await db.favorite.create({
         data: {
           productId,
           clerkId: user.id,
         },
       });
+      revalidatePath(pathname);
+      return { favoriteId: newFavorite.id, message: 'Added to Faves' }; // Return new favoriteId
     }
-    revalidatePath(pathname);
-    return { message: favoriteId ? 'Removed from Faves' : 'Added to Faves' };
   } catch (error) {
-    return renderError(error);
+    return { error: renderError(error) }; // Return error message if any
   }
 };
 
