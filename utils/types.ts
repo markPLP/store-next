@@ -1,7 +1,7 @@
 export type actionFunction = (
   prevState: any,
   formData: FormData
-) => Promise<{ message: string }>;
+) => Promise<{ message: string }>; // function returns a Promise that resolves to an object with a 'message' property of type string
 
 export type CartItem = {
   productId: string;

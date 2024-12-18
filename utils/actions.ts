@@ -17,6 +17,8 @@ const renderError = (error: unknown): { message: string } => {
 // helper function
 const getAuthUser = async () => {
   const user = await currentUser();
+  // console.log(user);
+
   if (!user) {
     throw new Error('You must be logged in to access this route');
   }
@@ -125,6 +127,71 @@ export const deleteProductAction = async (prevState: { productId: string }) => {
     revalidatePath('/admin/products'); // update UI -  Incremental Static Regeneration (ISR)
     // NOTE: This allows you to refresh the static data for a specific page or route without rebuilding the entire app.
     return { message: 'product removed' };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const fetchAdminProductDetails = async (productId: string) => {
+  await getAdminUser();
+  const product = await db.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+  if (!product) redirect('/admin/products');
+  return product;
+};
+
+export const updateProductAction = async (
+  prevState: any,
+  formData: FormData
+) => {
+  await getAdminUser();
+  try {
+    const productId = formData.get('id') as string;
+    const rawData = Object.fromEntries(formData); // get all the form fields
+    const validatedFields = validateWithZodSchema(productSchema, rawData);
+
+    //update the fields
+    await db.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        ...validatedFields,
+      },
+    });
+    revalidatePath(`/admin/products/${productId}/edit`); // update the UI
+    return { message: 'Product updated successfully' };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const updateProductImageAction = async (
+  prevState: any,
+  formData: FormData
+) => {
+  await getAuthUser();
+  try {
+    const image = formData.get('image') as File;
+    const productId = formData.get('id') as string;
+    const oldImageUrl = formData.get('url') as string; // from hidden input name='url'
+
+    const validatedFile = validateWithZodSchema(imageSchema, { image });
+    const fullPath = await uploadImage(validatedFile.image);
+    await deleteImage(oldImageUrl); // delete old image from supabase
+    await db.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        image: fullPath,
+      },
+    });
+    revalidatePath(`/admin/products/${productId}/edit`);
+    return { message: 'Product Image updated successfully' };
   } catch (error) {
     return renderError(error);
   }
