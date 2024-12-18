@@ -65,6 +65,7 @@ async function ItemsPage() {
 }
 
 // BIND approach - working with forms in JavaScript
+// the deleteProduct function is pre-configured(.bind) to always use the productId argument when invoked.
 function DeleteProduct({ productId }: { productId: string }) {
   const deleteProduct = deleteProductAction.bind(null, { productId });
   return (
