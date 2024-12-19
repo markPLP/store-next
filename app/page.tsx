@@ -2,6 +2,8 @@ import Hero from '@/components/home/Hero';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import { fetchFeaturedProducts } from '@/utils/actions';
 import { Product } from '@prisma/client';
+import { Suspense } from 'react';
+import LoadingContainer from '@/components/global/LoadingContainer';
 
 export const metadata = {
   title: 'Home | My E-Commerce Store',
@@ -14,7 +16,9 @@ async function HomePage() {
   return (
     <>
       <Hero />
-      <FeaturedProducts products={featuredProducts} />
+      <Suspense fallback={<LoadingContainer />}>
+        <FeaturedProducts products={featuredProducts} />
+      </Suspense>
     </>
   );
 }

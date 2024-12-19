@@ -10,6 +10,7 @@ import TextAreaInput from '@/components/form/TextAreaInput';
 import { SubmitButton } from '@/components/form/Button';
 import CheckboxInput from '@/components/form/CheckBoxInput';
 import ImageInputContainer from '@/components/form/ImageInputContainer';
+
 // dynamic page // grab params
 async function EditProductPage({ params }: { params: { id: string } }) {
   const { id } = params;

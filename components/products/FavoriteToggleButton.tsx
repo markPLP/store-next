@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import FavoriteToggleForm from './FavoriteToggleForm';
 import { fetchFavoriteId } from '@/utils/actions';
-import { CardSignInButton } from '../form/Button';
-import { useAuth } from '@clerk/nextjs';
 
 export default function FavoriteToggleButton({
   productId,
