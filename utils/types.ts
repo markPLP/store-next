@@ -1,7 +1,16 @@
+// export type actionFunction = (
+//   prevState: any,
+//   formData: FormData
+// ) => Promise<{ message: string; favoriteId?: string | null }>; // function returns a Promise that resolves to an object with a 'message' property of type string
+
 export type actionFunction = (
   prevState: any,
   formData: FormData
-) => Promise<{ message: string }>; // function returns a Promise that resolves to an object with a 'message' property of type string
+) => Promise<{
+  favoriteId?: string | null;
+  message?: string;
+  error?: { message: string };
+}>;
 
 export type CartItem = {
   productId: string;

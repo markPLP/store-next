@@ -9,11 +9,6 @@ const initialState = {
   message: '',
 };
 
-// type FormContainerProps = {
-//   action: actionFunction;
-//   children: React.ReactNode;
-// };
-
 function FormContainer({
   action,
   children,

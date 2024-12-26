@@ -1,30 +1,13 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import FavoriteToggleForm from './FavoriteToggleForm';
+import { auth } from '@clerk/nextjs/server';
+import { CardSignInButton } from '../form/Buttons';
 import { fetchFavoriteId } from '@/utils/actions';
+import FavoriteToggleForm from './FavoriteToggleForm';
 
-export default function FavoriteToggleButton({
-  productId,
-}: {
-  productId: string;
-}) {
-  const [favoriteId, setFavoriteId] = useState<string | null>(null);
+async function FavoriteToggleButton({ productId }: { productId: string }) {
+  const { userId } = auth();
+  if (!userId) return <CardSignInButton />;
+  const favoriteId = await fetchFavoriteId({ productId });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedFavoriteId = await fetchFavoriteId({ productId });
-      setFavoriteId(fetchedFavoriteId);
-    };
-    fetchData();
-    setFavoriteId(productId);
-  }, [productId]);
-
-  return (
-    <FavoriteToggleForm
-      productId={productId}
-      favoriteId={favoriteId}
-      setFavoriteId={setFavoriteId} // Pass the setter function as a prop
-    />
-  );
+  return <FavoriteToggleForm favoriteId={favoriteId} productId={productId} />;
 }
+export default FavoriteToggleButton;

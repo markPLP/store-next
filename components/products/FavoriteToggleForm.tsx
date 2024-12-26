@@ -1,42 +1,29 @@
+'use client';
+
 import { usePathname } from 'next/navigation';
+import FormContainer from '../form/FormContainer';
 import { toggleFavoriteAction } from '@/utils/actions';
-import { CardSubmitButton } from '../form/Button';
-import { useToast } from '../ui/use-toast';
+import { CardSubmitButton } from '../form/Buttons';
 
 type FavoriteToggleFormProps = {
   productId: string;
   favoriteId: string | null;
-  setFavoriteId: React.Dispatch<React.SetStateAction<string | null>>; // Add the setter type
 };
 
 function FavoriteToggleForm({
   productId,
   favoriteId,
-  setFavoriteId,
 }: FavoriteToggleFormProps) {
   const pathname = usePathname();
-  const { toast } = useToast();
-  const handleToggle = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent form submission
-    const { favoriteId: newFavoriteId, message } = await toggleFavoriteAction({
-      productId,
-      favoriteId,
-      pathname,
-    });
-
-    if (newFavoriteId !== undefined) {
-      setFavoriteId(newFavoriteId); // Update the parent state with the new favoriteId
-      toast({ description: message });
-    } else {
-      toast({ description: message });
-    }
-  };
-
+  const toggleAction = toggleFavoriteAction.bind(null, {
+    productId,
+    favoriteId,
+    pathname,
+  });
   return (
-    <form onSubmit={handleToggle}>
+    <FormContainer action={toggleAction}>
       <CardSubmitButton isFavorite={favoriteId ? true : false} />
-    </form>
+    </FormContainer>
   );
 }
-
 export default FavoriteToggleForm;

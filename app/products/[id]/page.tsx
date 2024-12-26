@@ -2,12 +2,13 @@ import BreadCrumbs from '@/components/single-product/BreadCrumbs';
 import { fetchSingleProduct } from '@/utils/actions';
 import Image from 'next/image';
 import { formatCurrency } from '@/utils/format';
-import FavoriteToggleButton from '@/components/products/FavoriteToggleButton';
 import AddToCart from '@/components/single-product/AddToCart';
 import ProductRating from '@/components/single-product/ProductRating';
 import ShareButton from '@/components/single-product/ShareButton';
 import SubmitReview from '@/components/reviews/SubmitReview';
 import ProductReviews from '@/components/reviews/ProductReviews';
+import FavoriteToggleButtonWrapper from '@/components/products/FavoriteToggleButtonWrapper';
+import FavoriteToggleButton from '@/components/products/FavoriteToggleButton';
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
   const product = await fetchSingleProduct(params.id);
@@ -34,6 +35,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
             <h1 className="capitalize text-3xl font-bold">{name}</h1>
             <div className="flex items-center gap-x-2">
               <FavoriteToggleButton productId={params.id} />
+              {/* <FavoriteToggleButtonWrapper productId={params.id} /> */}
               <ShareButton name={product.name} productId={params.id} />
             </div>
           </div>

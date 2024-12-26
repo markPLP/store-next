@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { CardSignInButton } from '../form/Button';
+import { CardSignInButton } from '../form/Buttons';
 import FavoriteToggleButton from './FavoriteToggleButton';
 
 function FavoriteToggleButtonWrapper({ productId }: { productId: string }) {

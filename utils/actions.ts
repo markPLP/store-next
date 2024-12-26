@@ -22,11 +22,11 @@ const renderError = (error: unknown): { message: string } => {
 // helper function
 export const getAuthUser = async () => {
   const user = await currentUser();
-  // console.log(user);
 
   if (!user) {
     throw new Error('You must be logged in to access this route');
   }
+
   return user;
 };
 
@@ -215,7 +215,7 @@ export const fetchFavoriteId = async ({ productId }: { productId: string }) => {
       id: true,
     },
   });
-  return favorite?.id || null; // null on first load
+  return favorite?.id || null; // null on first load or favorite could be null
 };
 
 export const toggleFavoriteAction = async ({
@@ -252,6 +252,36 @@ export const toggleFavoriteAction = async ({
     return { error: renderError(error) }; // Return error message if any
   }
 };
+
+// export const toggleFavoriteAction = async (prevState: {
+//   productId: string;
+//   favoriteId: string | null;
+//   pathname: string;
+// }) => {
+//   const user = await getAuthUser();
+//   const { productId, favoriteId, pathname } = prevState;
+//   try {
+//     if (favoriteId) {
+//       // If already favorited, remove from the database
+//       await db.favorite.delete({
+//         where: {
+//           id: favoriteId,
+//         },
+//       });
+//     } else {
+//       await db.favorite.create({
+//         data: {
+//           productId,
+//           clerkId: user.id,
+//         },
+//       });
+//     }
+//     revalidatePath(pathname);
+//     return { message: favoriteId ? 'Removed from Faves' : 'Added to Faves' };
+//   } catch (error) {
+//     return renderError(error);
+//   }
+// };
 
 export const fetchUserFavorites = async () => {
   const user = await getAuthUser();

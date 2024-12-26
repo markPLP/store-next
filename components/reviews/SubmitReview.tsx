@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { SubmitButton } from '@/components/form/Button';
+import { SubmitButton } from '@/components/form/Buttons';
 import FormContainer from '@/components/form/FormContainer';
 import { Card } from '@/components/ui/card';
 import RatingInput from '@/components/reviews/RatingInput';

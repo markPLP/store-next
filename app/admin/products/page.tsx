@@ -2,7 +2,7 @@ import EmptyList from '@/components/global/EmptyList';
 import { fetchAdminProducts } from '@/utils/actions';
 import Link from 'next/link';
 import FormContainer from '@/components/form/FormContainer';
-import { IconButton } from '@/components/form/Button';
+import { IconButton } from '@/components/form/Buttons';
 import { deleteProductAction } from '@/utils/actions';
 
 import { formatCurrency } from '@/utils/format';
