@@ -48,7 +48,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
           <AddToCart productId={params.id} />
         </div>
       </div>
-      <ProductReviews productId={params.id} />
+      {/* <ProductReviews productId={params.id} /> */}
       <SubmitReview productId={params.id} />
     </section>
   );
