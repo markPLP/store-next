@@ -12,6 +12,8 @@ import { useUser } from '@clerk/nextjs';
 function SubmitReview({ productId }: { productId: string }) {
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
   const { user } = useUser(); // public route - goods if no loggedin users
+  console.log(user, 'from submit review');
+
   return (
     <div>
       <Button

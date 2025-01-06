@@ -11,7 +11,7 @@ export default function UserIcon() {
     return (
       <Image
         src={user.imageUrl}
-        alt="User profile"
+        alt={user.username || 'User icon'} // Provide a fallback string
         width={24}
         height={24}
         className="rounded-full object-cover"
