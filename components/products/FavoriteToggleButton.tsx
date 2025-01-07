@@ -17,7 +17,6 @@ export default function FavoriteToggleButton({
       setFavoriteId(fetchedFavoriteId);
     };
     fetchData();
-    setFavoriteId(productId);
   }, [productId]);
 
   return (
@@ -28,3 +27,16 @@ export default function FavoriteToggleButton({
     />
   );
 }
+
+// import { auth } from '@clerk/nextjs/server';
+// import { CardSignInButton } from '../form/Button';
+// import { fetchFavoriteId } from '@/utils/actions';
+// import FavoriteToggleForm from './FavoriteToggleForm';
+// async function FavoriteToggleButton({ productId }: { productId: string }) {
+//   const { userId } = auth();
+//   if (!userId) return <CardSignInButton />;
+//   const favoriteId = await fetchFavoriteId({ productId });
+
+//   return <FavoriteToggleForm favoriteId={favoriteId} productId={productId} />;
+// }
+// export default FavoriteToggleButton;

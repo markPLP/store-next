@@ -226,7 +226,7 @@ export const toggleFavoriteAction = async ({
   productId: string;
   favoriteId: string | null;
   pathname: string;
-}) => {
+}): Promise<{ favoriteId?: string | null; message: string }> => {
   const user = await getAuthUser();
   try {
     if (favoriteId) {
@@ -249,9 +249,42 @@ export const toggleFavoriteAction = async ({
       return { favoriteId: newFavorite.id, message: 'Added to Faves' }; // Return new favoriteId
     }
   } catch (error) {
-    return { error: renderError(error) }; // Return error message if any
+    return renderError(error); // Return error message if any
   }
 };
+
+// export const toggleFavoriteAction = async (prevState: {
+//   productId: string;
+//   favoriteId: string | null;
+//   pathname: string;
+// }): Promise<{ favoriteId?: string; message: string }> => {
+//   const user = await getAuthUser();
+//   const { productId, favoriteId, pathname } = prevState;
+//   try {
+//     if (favoriteId) {
+//       // If already favorited, remove from the database
+//       await db.favorite.delete({
+//         where: {
+//           id: favoriteId,
+//         },
+//       });
+//     } else {
+//       // If not favorited, add to the database
+//       await db.favorite.create({
+//         data: {
+//           productId,
+//           clerkId: user.id,
+//         },
+//       });
+//     }
+//     revalidatePath(pathname);
+//     console.log(favoriteId, 'favoriteIdfavoriteId');
+
+//     return { message: favoriteId ? 'Removed from Faves' : 'Added to Faves' };
+//   } catch (error) {
+//     return renderError(error);
+//   }
+// };
 
 export const fetchUserFavorites = async () => {
   const user = await getAuthUser();

@@ -14,6 +14,7 @@ import ShareButton from '@/components/single-product/ShareButton';
 import SubmitReview from '@/components/reviews/SubmitReview';
 import ProductReviews from '@/components/reviews/ProductReviews';
 import { auth } from '@clerk/nextjs/server';
+import FavoriteToggleButtonWrapper from '@/components/products/FavoriteToggleButtonWrapper';
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
   const product = await fetchSingleProduct(params.id);
@@ -50,7 +51,8 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
           <div className="flex gap-x-8 items-center">
             <h1 className="capitalize text-3xl font-bold">{name} </h1>
             <div className="flex items-center gap-x-2">
-              <FavoriteToggleButton productId={params.id} />
+              <FavoriteToggleButtonWrapper productId={params.id} />
+              {/* <FavoriteToggleButton productId={params.id} /> */}
               <ShareButton name={product.name} productId={params.id} />
             </div>
           </div>
