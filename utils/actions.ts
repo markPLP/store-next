@@ -406,3 +406,17 @@ export const findExistingReview = async (userId: string, productId: string) => {
     },
   });
 };
+
+export const fetchCartItems = async () => {
+  const { userId } = auth();
+
+  const cart = await db.cart.findFirst({
+    where: {
+      clerkId: userId ?? '', // possible null so we use empty string
+    },
+    select: {
+      numItemsInCart: true,
+    },
+  });
+  return cart?.numItemsInCart || 0; // return 0 if cart is null
+};
