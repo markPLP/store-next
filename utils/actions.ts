@@ -12,6 +12,7 @@ import {
 } from './schema';
 import { deleteImage, uploadImage } from './supabase';
 import { revalidatePath } from 'next/cache';
+import { create } from 'domain';
 
 // helper function
 const renderError = (error: unknown): { message: string } => {
@@ -515,6 +516,9 @@ export const updateCart = async (cart: Cart) => {
     include: {
       product: true, // Include the related product // additional data to use
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
   });
 
   let numItemsInCart = 0;
@@ -528,17 +532,20 @@ export const updateCart = async (cart: Cart) => {
   const shipping = cartTotal ? cart.shipping : 0; // set shipping to 0 if cartTotal is 0
   const orderTotal = cartTotal + tax + shipping;
 
-  await db.cart.update({
+  const currentCart = await db.cart.update({
     where: {
       id: cart.id,
     },
+
     data: {
       numItemsInCart,
       cartTotal,
       tax,
       orderTotal,
     },
+    include: includeProductClause,
   });
+  return { currentCart, cartItems };
 };
 
 export const addToCartAction = async (prevState: any, formData: FormData) => {
