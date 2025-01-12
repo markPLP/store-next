@@ -1,11 +1,12 @@
 'use client';
 
 import { ThemeProvider } from './theme-provider';
+import { CartProvider } from '@/context/CartContext';
 // import { Toaster } from '@/components/ui/toaster';
 
 function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <CartProvider>
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
@@ -15,7 +16,7 @@ function Providers({ children }: { children: React.ReactNode }) {
         {children}
         {/* <Toaster /> */}
       </ThemeProvider>
-    </>
+    </CartProvider>
   );
 }
 
