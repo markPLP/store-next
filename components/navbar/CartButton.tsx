@@ -1,10 +1,25 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { LuShoppingCart } from 'react-icons/lu';
 import { fetchCartItems } from '@/utils/actions';
-async function CartButton() {
-  //const numItemsIncart = 9;
-  const numItemsIncart = await fetchCartItems();
+import { useEffect } from 'react';
+import { useCart } from '@/context/CartContext';
+
+function CartButton() {
+  const { countItemsInCart, setCountItemsInCart } = useCart();
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const cartItems = await fetchCartItems();
+      if (cartItems !== undefined) {
+        setCountItemsInCart(cartItems);
+      }
+    };
+    fetchdata();
+  }, [setCountItemsInCart]);
+
   return (
     <Button
       asChild
@@ -15,7 +30,7 @@ async function CartButton() {
       <Link href="/cart">
         <LuShoppingCart />
         <span className="absolute -top-3 -right-3 bg-primary text-white rounded-full h-6 w-6 flex items-center justify-center text-sm">
-          {numItemsIncart}
+          {countItemsInCart}
         </span>
       </Link>
     </Button>

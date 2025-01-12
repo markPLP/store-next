@@ -4,13 +4,26 @@ import SelectProductAmount from './SelectProductAmount';
 import { Mode } from './SelectProductAmount';
 import FormContainer from '../form/FormContainer';
 import { SubmitButton } from '../form/Button';
-import { addToCartAction } from '@/utils/actions';
+import { addToCartAction, fetchCartItems } from '@/utils/actions';
 import { useAuth } from '@clerk/nextjs';
 import { ProductSignInButton } from '../form/Button';
+import { useCart } from '@/context/CartContext';
 
 function AddToCart({ productId }: { productId: string }) {
   const [amount, setAmount] = useState(1);
   const { userId } = useAuth(); // use useAuth if client component
+  const { setCountItemsInCart } = useCart();
+
+  const handleAddToCart = async (): Promise<{ message: string }> => {
+    const formData = new FormData();
+    formData.append('productId', productId);
+    formData.append('amount', amount.toString());
+    await addToCartAction({ productId, amount }, formData);
+    const cartItems = await fetchCartItems();
+    setCountItemsInCart(cartItems);
+    return { message: 'Item added to the cart' };
+  };
+
   return (
     <div className="mt-4">
       <SelectProductAmount
@@ -19,7 +32,7 @@ function AddToCart({ productId }: { productId: string }) {
         setAmount={setAmount}
       />
       {userId ? (
-        <FormContainer action={addToCartAction}>
+        <FormContainer action={handleAddToCart}>
           <input type="hidden" name="productId" value={productId} />
           <input type="hidden" name="amount" value={amount} />
           <SubmitButton text="add to cart" size="default" className="mt-8" />

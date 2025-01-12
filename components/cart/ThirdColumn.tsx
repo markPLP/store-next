@@ -4,15 +4,23 @@ import SelectProductAmount from '../single-product/SelectProductAmount';
 import { Mode } from '../single-product/SelectProductAmount';
 import FormContainer from '../form/FormContainer';
 import { SubmitButton } from '../form/Button';
-import { removeCartItemAction, updateCartItemAction } from '@/utils/actions';
+import {
+  fetchCartItems,
+  removeCartItemAction,
+  updateCartItemAction,
+} from '@/utils/actions';
 import { useToast } from '../ui/use-toast';
+import { useCart } from '@/context/CartContext';
 
 function ThirdColumn({ quantity, id }: { quantity: number; id: string }) {
   const [amount, setAmount] = useState(quantity);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { setCountItemsInCart } = useCart();
 
   const handleAmountChange = async (value: number) => {
+    console.log('value', value);
+
     setIsLoading(true);
     toast({ description: 'Calculating...' });
     const result = await updateCartItemAction({
@@ -21,6 +29,10 @@ function ThirdColumn({ quantity, id }: { quantity: number; id: string }) {
     });
     setAmount(value);
     toast({ description: result.message });
+    // Update the global cart state
+    const cartItems = await fetchCartItems();
+    setCountItemsInCart(cartItems);
+
     setIsLoading(false);
   };
 

@@ -621,7 +621,7 @@ export const updateCartItemAction = async ({
   }
 };
 
-export const createOrderAction = async (prevState: any, formData: FormData) => {
+export const createOrderAction = async (formData: FormData) => {
   const user = await getAuthUser();
   try {
     const cart = await fetchOrCreateCart({
@@ -644,6 +644,8 @@ export const createOrderAction = async (prevState: any, formData: FormData) => {
         id: cart.id,
       },
     });
+    // Return a success message
+    // return { message: 'Order placed successfully' };
   } catch (error) {
     return renderError(error);
   }
