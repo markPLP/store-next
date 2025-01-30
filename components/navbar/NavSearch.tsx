@@ -30,7 +30,7 @@ function NavSearch() {
     <Input
       type="search"
       placeholder="search product..."
-      className="max-w-xs dark:bg-muted "
+      className="dark:bg-muted order-3 col-span-2 w-full md:order-2 md:col-span-1"
       onChange={(e) => {
         setSearch(e.target.value);
         handleSearch(e.target.value);

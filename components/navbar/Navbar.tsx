@@ -9,12 +9,12 @@ import NavSearch from './NavSearch';
 function Navbar() {
   return (
     <nav className="border-b">
-      <Container className="flex flex-col sm:flex-row sm:justify-between sm:items-center flex-wrap py-8">
+      <Container className="grid grid-cols-[1fr,auto] gap-4 py-8 justify-items-start md:grid-cols-[1fr,auto,auto]">
         <Logo />
         <Suspense fallback={<div>Loading...</div>}>
           <NavSearch />
         </Suspense>
-        <div className="flex gap-4 items-center">
+        <div className="order-2 flex gap-4 items-center md:order-3">
           <Suspense fallback={<div>Loading...</div>}>
             <CartButton />
           </Suspense>

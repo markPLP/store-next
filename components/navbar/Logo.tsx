@@ -7,7 +7,11 @@ import { Button } from '../ui/button';
 
 function Logo() {
   return (
-    <Button size="sm" asChild className="bg-transparent hover:bg-transparent">
+    <Button
+      size="sm"
+      asChild
+      className="order-1 bg-transparent hover:bg-transparent"
+    >
       <Link href="/">
         <FaReact className="text-lg !w-14 !h-14 text-primary animate-[spin_5s_linear_infinite]" />
         <RiNextjsLine className="text-lg !w-14 !h-14 text-primary" />
